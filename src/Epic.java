@@ -18,32 +18,29 @@ public class Epic extends Task {
         return subtaskIds;
     }
 
-
-
-    @Override
-    public boolean equals(Object obj) {
+    @Override  public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Epic otherEpic = (Epic) obj;
-        return Objects.equals(title, otherEpic.title) &&
-                Objects.equals(specification, otherEpic.specification) &&
-                (id == otherEpic.id) &&
-                Objects.equals(status, otherEpic.status) &&
+        return Objects.equals(getTitle(), otherEpic.getTitle()) &&
+                Objects.equals(getSpecification(), otherEpic.getSpecification()) &&
+                (getId() == otherEpic.getId()) &&
+                Objects.equals(getStatus(), otherEpic.getStatus()) &&
                 Objects.equals(subtaskIds, otherEpic.subtaskIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, specification, id, status, subtaskIds);
+        return Objects.hash(getTitle(), getSpecification(), getId(), getStatus(), subtaskIds);
     }
 
     @Override
     public String toString() {
         return "Ёпик{" +
-                "название='" + title + '\'' +
-                ", описание='" + specification + '\'' +
-                ", id='" + id + '\'' +
-                ", статус='" + status + '\'' +
+                "название='" + getTitle() + '\'' +
+                ", описание='" + getSpecification() + '\'' +
+                ", id='" + getId() + '\'' +
+                ", статус='" + getStatus() + '\'' +
                 ", id подзадач(и)='" + subtaskIds + '}' + '\'';
     }
 }

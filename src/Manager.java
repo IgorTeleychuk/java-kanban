@@ -7,7 +7,7 @@ public class Manager {
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
 
-    public void createTask(Task newTask) {
+    public void addTask(Task newTask) {
         int taskId = ++counter;
         newTask.setId(taskId);
         tasks.put(taskId, newTask);
@@ -137,9 +137,5 @@ public class Manager {
         } else {
             epics.get(epicId).setStatus("IN_PROGRESS");
         }
-    }
-    public String print() {
-        System.out.printf(" Task \n %s \n Epic \n %s \n Subtask \n %s \n", getListOfTasks(), getListOfEpics(), getListOfSubtasks());
-        return null;
     }
 }

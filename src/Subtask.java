@@ -22,25 +22,25 @@ public class Subtask extends Task {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Subtask otherSubtask = (Subtask) obj;
-        return Objects.equals(title, otherSubtask.title) &&
-                Objects.equals(specification, otherSubtask.specification) &&
-                (id == otherSubtask.id) &&
-                Objects.equals(status, otherSubtask.status) &&
+        return Objects.equals(getTitle(), otherSubtask.getTitle()) &&
+                Objects.equals(getSpecification(), otherSubtask.getSpecification()) &&
+                (getId() == otherSubtask.getId()) &&
+                Objects.equals(getStatus(), otherSubtask.getStatus()) &&
                 (epicId == otherSubtask.epicId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, specification, id, status, epicId);
+        return Objects.hash(getTitle(), getSpecification(), getId(), getStatus(), epicId);
     }
 
     @Override
     public String toString() {
         return "Подзадача{" +
-                "название='" + title + '\'' +
-                ", описание='" + specification + '\'' +
-                ", id='" + id + '\'' +
-                ", статус='" + status + '\'' +
+                "название='" + getTitle() + '\'' +
+                ", описание='" + getSpecification() + '\'' +
+                ", id='" + getId() + '\'' +
+                ", статус='" + getStatus() + '\'' +
                 ", id эпика='" + epicId + '}' + '\'';
     }
 }
