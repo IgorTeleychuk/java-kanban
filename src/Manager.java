@@ -13,7 +13,7 @@ public class Manager {
         tasks.put(taskId, newTask);
     }
 
-    public void createSubtask(Subtask newSubtask) {
+    public void addSubtask(Subtask newSubtask) {
         int newSubtaskId = ++counter;
         newSubtask.setId(newSubtaskId);
         subtasks.put(newSubtaskId, newSubtask);
@@ -23,7 +23,7 @@ public class Manager {
         checkEpicStatus(epicId);
     }
 
-    public void createEpic(Epic newEpic) {
+    public void addEpic(Epic newEpic) {
         int epicId = ++counter;
         newEpic.setId(epicId);
         epics.put(epicId, newEpic);

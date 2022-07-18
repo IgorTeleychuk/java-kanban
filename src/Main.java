@@ -10,17 +10,17 @@ public class Main {
 
         Epic epic3 = new Epic("Эпик 1", "Важная встреча");
         Epic epic4 = new Epic("Эпик 2", "Видеоконференция");
-        manager.createEpic(epic3);
-        manager.createEpic(epic4);
+        manager.addEpic(epic3);
+        manager.addEpic(epic4);
 
         Subtask subtask5 = new Subtask("Подзадача 1", "Подготовиться", 3);
         Subtask subtask6 = new Subtask("Подзадача 2", "Взять документы", 3);
         Subtask subtask7 = new Subtask("Подзадача 3", "Настроить камеру", 4);
         Subtask subtask8 = new Subtask("Подзадача 4", "Настроить софт", 4);
-        manager.createSubtask(subtask5);
-        manager.createSubtask(subtask6);
-        manager.createSubtask(subtask7);
-        manager.createSubtask(subtask8);
+        manager.addSubtask(subtask5);
+        manager.addSubtask(subtask6);
+        manager.addSubtask(subtask7);
+        manager.addSubtask(subtask8);
 
         Task updateTask3 = new Task("Задача Один", "Купить продукты", task1.getId(), "IN_PROGRESS");
         manager.updateTask(updateTask3);
