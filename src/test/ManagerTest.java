@@ -1,11 +1,4 @@
-package Test;
-
-import service.Manager;
-import tasks.Task;
-
-import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.*;
+package test;
 
 class ManagerTest {
 
