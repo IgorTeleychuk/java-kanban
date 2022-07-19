@@ -1,3 +1,8 @@
+import service.Manager;
+import tasks.Task;
+import tasks.Epic;
+import tasks.SubTask;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -13,10 +18,10 @@ public class Main {
         manager.addEpic(epic3);
         manager.addEpic(epic4);
 
-        Subtask subtask5 = new Subtask("Подзадача 1", "Подготовиться", 3);
-        Subtask subtask6 = new Subtask("Подзадача 2", "Взять документы", 3);
-        Subtask subtask7 = new Subtask("Подзадача 3", "Настроить камеру", 4);
-        Subtask subtask8 = new Subtask("Подзадача 4", "Настроить софт", 4);
+        SubTask subtask5 = new SubTask("Подзадача 1", "Подготовиться", 3);
+        SubTask subtask6 = new SubTask("Подзадача 2", "Взять документы", 3);
+        SubTask subtask7 = new SubTask("Подзадача 3", "Настроить камеру", 4);
+        SubTask subtask8 = new SubTask("Подзадача 4", "Настроить софт", 4);
         manager.addSubtask(subtask5);
         manager.addSubtask(subtask6);
         manager.addSubtask(subtask7);
@@ -28,10 +33,10 @@ public class Main {
         Epic updateEpic3 = new Epic("Эпичная задача", "Важная встреча", epic3.getId(), epic3.getStatus(), epic3.getSubtaskIds());
         manager.updateEpic(updateEpic3);
 
-        Subtask updateSubtask5 = new Subtask("Подзадача",
+        SubTask updateSubtask5 = new SubTask("Подзадача",
                 "123", subtask5.getId(),"IN_PROGRESS", 3);
         manager.updateSubtask(updateSubtask5);
-        Subtask updateSubtask7 = new Subtask("Подзадача",
+        SubTask updateSubtask7 = new SubTask("Подзадача",
                 "123", subtask7.getId(),"DONE", 4);
         manager.updateSubtask(updateSubtask7);
 

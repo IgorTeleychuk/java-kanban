@@ -1,10 +1,16 @@
+package service;
+
+import tasks.Task;
+import tasks.Epic;
+import tasks.SubTask;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Manager {
     private int counter = 0;
     private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private HashMap<Integer, SubTask> subtasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
 
     public void addTask(Task newTask) {
@@ -13,7 +19,7 @@ public class Manager {
         tasks.put(taskId, newTask);
     }
 
-    public void addSubtask(Subtask newSubtask) {
+    public void addSubtask(SubTask newSubtask) {
         int newSubtaskId = ++counter;
         newSubtask.setId(newSubtaskId);
         subtasks.put(newSubtaskId, newSubtask);
@@ -60,7 +66,7 @@ public class Manager {
         return new ArrayList<>(epics.values());
     }
 
-    public ArrayList<Subtask> getListOfSubtasks() {
+    public ArrayList<SubTask> getListOfSubtasks() {
         return new ArrayList<>(subtasks.values());
     }
 
@@ -72,13 +78,13 @@ public class Manager {
         return epics.get(id);
     }
 
-    public Subtask getSubtaskId(int id) {
+    public SubTask getSubtaskId(int id) {
         return subtasks.get(id);
     }
 
-    public ArrayList<Subtask> getListOfSubtasksOneEpic(int id) {
+    public ArrayList<SubTask> getListOfSubtasksOneEpic(int id) {
         ArrayList<Integer> subtaskIds = epics.get(id).getSubtaskIds();
-        ArrayList<Subtask> subtasksByOneEpic = new ArrayList<>();
+        ArrayList<SubTask> subtasksByOneEpic = new ArrayList<>();
         for (int subtaskId : subtaskIds) {
             subtasksByOneEpic.add(subtasks.get(subtaskId));
         }
@@ -113,7 +119,7 @@ public class Manager {
         epics.put(updateEpic.getId(), updateEpic);
     }
 
-    public void updateSubtask(Subtask updateSubtask) {
+    public void updateSubtask(SubTask updateSubtask) {
         subtasks.put(updateSubtask.getId(), updateSubtask);
         int epicId = subtasks.get(updateSubtask.getId()).getEpicId();
         checkEpicStatus(epicId);

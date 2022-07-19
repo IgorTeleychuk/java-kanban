@@ -1,14 +1,16 @@
+package tasks;
+
 import java.util.Objects;
 
-public class Subtask extends Task {
+public class SubTask extends Task {
     private int epicId;
 
-    public Subtask(String title, String specification, int epicId) {
+    public SubTask(String title, String specification, int epicId) {
         super(title, specification);
         this.epicId = epicId;
     }
 
-    public Subtask(String title, String specification, int id, String status, int epicId) {
+    public SubTask(String title, String specification, int id, String status, int epicId) {
         super(title, specification, id, status);
         this.epicId = epicId;
     }
@@ -21,7 +23,7 @@ public class Subtask extends Task {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Subtask otherSubtask = (Subtask) obj;
+        SubTask otherSubtask = (SubTask) obj;
         return Objects.equals(getTitle(), otherSubtask.getTitle()) &&
                 Objects.equals(getSpecification(), otherSubtask.getSpecification()) &&
                 (getId() == otherSubtask.getId()) &&
