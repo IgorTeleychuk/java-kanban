@@ -1,48 +1,56 @@
 package tasks;
 
+import tasks.Task;
+import tasks.Status;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
+    private final List<Integer> subTaskIDs = new ArrayList<>();
 
-    private ArrayList<Integer> subtaskIds = new ArrayList<>();
-
-    public Epic(String title, String specification) {
-        super(title, specification);
+    public Epic(String name, Status status, String description) {
+        super(name, status, description);
     }
 
-    public Epic(String title, String specification, int id, String status, ArrayList<Integer> subtaskIds) {
-        super(title, specification, id, status);
-        this.subtaskIds = subtaskIds;
+    public void addSubTaskID(SubTask subTask) {
+        subTaskIDs.add(subTask.getId());
     }
 
-    public ArrayList<Integer> getSubtaskIds() {
-        return subtaskIds;
+    public List<Integer> getSubTaskIDs() {
+        return subTaskIDs;
     }
 
-    @Override  public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Epic otherEpic = (Epic) obj;
-        return Objects.equals(getTitle(), otherEpic.getTitle()) &&
-                Objects.equals(getSpecification(), otherEpic.getSpecification()) &&
-                (getId() == otherEpic.getId()) &&
-                Objects.equals(getStatus(), otherEpic.getStatus()) &&
-                Objects.equals(subtaskIds, otherEpic.subtaskIds);
+    public void removeSubTaskID(int subTaskId) {
+        subTaskIDs.remove(subTaskId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Epic epic = (Epic) o;
+        return Objects.equals(subTaskIDs, epic.subTaskIDs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getSpecification(), getId(), getStatus(), subtaskIds);
+        return Objects.hash(super.hashCode(), subTaskIDs);
     }
+
+
 
     @Override
     public String toString() {
-        return "Ёпик{" +
-                "название='" + getTitle() + '\'' +
-                ", описание='" + getSpecification() + '\'' +
-                ", id='" + getId() + '\'' +
-                ", статус='" + getStatus() + '\'' +
-                ", id подзадач(и)='" + subtaskIds + '}' + '\'';
+        return "Epic{" +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", status=" + getStatus() +
+                ", description='" + getDescription() + '\'' +
+                ", subTasksIDs=" + subTaskIDs +
+                '}';
     }
 }
+

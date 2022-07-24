@@ -1,17 +1,15 @@
 package tasks;
 
+import tasks.Task;
+import tasks.Status;
+
 import java.util.Objects;
 
 public class SubTask extends Task {
     private int epicId;
 
-    public SubTask(String title, String specification, int epicId) {
-        super(title, specification);
-        this.epicId = epicId;
-    }
-
-    public SubTask(String title, String specification, int id, String status, int epicId) {
-        super(title, specification, id, status);
+    public SubTask(String name, Status status, String description, int epicId) {
+        super(name, status, description);
         this.epicId = epicId;
     }
 
@@ -19,30 +17,34 @@ public class SubTask extends Task {
         return epicId;
     }
 
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        SubTask otherSubtask = (SubTask) obj;
-        return Objects.equals(getTitle(), otherSubtask.getTitle()) &&
-                Objects.equals(getSpecification(), otherSubtask.getSpecification()) &&
-                (getId() == otherSubtask.getId()) &&
-                Objects.equals(getStatus(), otherSubtask.getStatus()) &&
-                (epicId == otherSubtask.epicId);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SubTask subTask = (SubTask) o;
+        return epicId == subTask.epicId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getSpecification(), getId(), getStatus(), epicId);
+        return Objects.hash(super.hashCode(), epicId);
     }
+
+
 
     @Override
     public String toString() {
-        return "Подзадача{" +
-                "название='" + getTitle() + '\'' +
-                ", описание='" + getSpecification() + '\'' +
-                ", id='" + getId() + '\'' +
-                ", статус='" + getStatus() + '\'' +
-                ", id эпика='" + epicId + '}' + '\'';
+        return "SubTask{" +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", status=" + getStatus() +
+                ", description='" + getDescription() + '\'' +
+                ", epicId=" + epicId +
+                '}';
     }
 }
