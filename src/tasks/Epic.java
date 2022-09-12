@@ -1,29 +1,28 @@
 package tasks;
 
-import tasks.Task;
-import tasks.Status;
+import status.Status;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import status.Status;
+
+import java.util.*;
+
 public class Epic extends Task {
-    private final List<Integer> subTaskIDs = new ArrayList<>();
+    private final List<Integer> subtaskIds = new ArrayList<>();
 
-    public Epic(String name, Status status, String description) {
-        super(name, status, description);
+    public Epic(String description, String name, Status status) {
+        super(description, name, status);
     }
 
-    public void addSubTaskID(SubTask subTask) {
-        subTaskIDs.add(subTask.getId());
+    public List<Integer> getSubtaskIds() {
+        return subtaskIds;
     }
 
-    public List<Integer> getSubTaskIDs() {
-        return subTaskIDs;
-    }
-
-    public void removeSubTaskID(int subTaskId) {
-        subTaskIDs.remove(subTaskId);
+    public void setSubtaskIds(int id) {
+        subtaskIds.add(id);
     }
 
     @Override
@@ -32,25 +31,23 @@ public class Epic extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
-        return Objects.equals(subTaskIDs, epic.subTaskIDs);
+        return Objects.equals(subtaskIds, epic.subtaskIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), subTaskIDs);
+        return Objects.hash(super.hashCode(), subtaskIds);
     }
-
-
 
     @Override
     public String toString() {
         return "Epic{" +
-                "id=" + getId() +
+                "subtaskIds=" + subtaskIds +
+                ", description='" + getDescription() + '\'' +
+                ", id=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", status=" + getStatus() +
-                ", description='" + getDescription() + '\'' +
-                ", subTasksIDs=" + subTaskIDs +
-                '}';
+                '}' + "\n";
     }
 }
 

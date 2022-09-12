@@ -1,76 +1,53 @@
 import tasks.Task;
-import tasks.Status;
+import status.Status;
 import tasks.Epic;
-import tasks.SubTask;
+import tasks.Subtask;
 import service.*;
+
+import java.util.List;
 
 public class Test {
     public void testing() {
-        TaskManager inMemoryTaskManager = Managers.getDefault();
-//        Добавляем 13 тасков 6 эпиков и 3 сабтаска
-        inMemoryTaskManager.addTask(new Task("Таск 1", Status.NEW, "Убраться"));
-        inMemoryTaskManager.addTask(new Task("Таск 2", Status.NEW, "Приготовить завтрак"));
-        inMemoryTaskManager.addTask(new Task("Таск 3", Status.NEW, "Оплатить интернет"));
-        inMemoryTaskManager.addTask(new Task("Таск 4", Status.NEW, "Поставить бассейн"));
-        inMemoryTaskManager.addTask(new Task("Таск 5", Status.NEW, "Полить сад"));
-        inMemoryTaskManager.addTask(new Task("Таск 6", Status.NEW, "Сменить мобильный тариф"));
-        inMemoryTaskManager.addTask(new Task("Таск 7", Status.NEW, "Посмотреть вебинар"));
-        inMemoryTaskManager.addTask(new Task("Таск 8", Status.NEW, "Записать расходы"));
-        inMemoryTaskManager.addTask(new Task("Таск 9", Status.NEW, "Позвонить родителям"));
-        inMemoryTaskManager.addTask(new Task("Таск 10", Status.NEW, "Оформить страховку"));
-        inMemoryTaskManager.addTask(new Task("Таск 11", Status.NEW, "Выехать на пикник"));
-        inMemoryTaskManager.addTask(new Task("Таск 12", Status.NEW, "Дочитать книгу"));
-        inMemoryTaskManager.addTask(new Task("Таск 13", Status.NEW, "Посмотреть сериал"));
-        inMemoryTaskManager.addEpic(new Epic("Эпик 1", Status.NEW, "Путешествие"));
-        inMemoryTaskManager.addEpic(new Epic("Эпик 2", Status.NEW, "Учеба"));
-        inMemoryTaskManager.addEpic(new Epic("Эпик 3", Status.NEW, "Работа"));
-        inMemoryTaskManager.addEpic(new Epic("Эпик 4", Status.NEW, "Планы"));
-        inMemoryTaskManager.addEpic(new Epic("Эпик 5", Status.NEW, "Расходы"));
-        inMemoryTaskManager.addEpic(new Epic("Эпик 6", Status.NEW, "Спорт"));
-        inMemoryTaskManager.addSubTask(new SubTask("Сабтаск 1", Status.NEW, "Составить план обучения", 15));
-        inMemoryTaskManager.addSubTask(new SubTask("Сабтаск 2", Status.NEW, "Выполнить домашнюю работу", 15));
-        inMemoryTaskManager.addSubTask(new SubTask("Сабтаск 3", Status.NEW, "Созвониться с руководителем", 16));
+        TaskManager inMemoryTaskManager = Managers.getInMemoryTaskManager(Managers.getDefaultHistory());
+        System.out.println("Создаем две задачи, эпик с тремя подзадачами и эпик без подзадач.");
+        inMemoryTaskManager.addTask(new Task("Cleaning", "Task_1", Status.NEW)); // id 1
+        inMemoryTaskManager.addTask(new Task("Training", "Task_2", Status.NEW)); // id 2
 
-        System.out.println("Инициализируем тесты по истории просмторов:");
-        System.out.println("Тест 1: Выборочный вызов. taskid - 4, 9; subtaskid - 20, 21, 22; epicid - 15;");
-        inMemoryTaskManager.getTaskByID(4);
-        inMemoryTaskManager.getSubtaskByID(20);
-        inMemoryTaskManager.getSubtaskByID(21);
-        inMemoryTaskManager.getTaskByID(9);
-        inMemoryTaskManager.getSubtaskByID(22);
-        inMemoryTaskManager.getEpicByID(15);
-        System.out.println("История просмотра \n" + inMemoryTaskManager.getHistory());
+        inMemoryTaskManager.addEpic(new Epic("Work", "Epic_1", Status.NEW)); // id 3
+        inMemoryTaskManager.addSubtask(new Subtask("Meeting", "Subtask_1", Status.NEW, 3)); // id 4
+        inMemoryTaskManager.addSubtask(new Subtask("Project", "Subtask_2", Status.NEW, 3)); // id 5
+        inMemoryTaskManager.addSubtask(new Subtask("Report", "Subtask_3", Status.NEW, 3)); // id 6
 
-        System.out.println("Доводим до 10 просмотров");
-        inMemoryTaskManager.getTaskByID(1);
-        inMemoryTaskManager.getTaskByID(2);
-        inMemoryTaskManager.getTaskByID(3);
-        inMemoryTaskManager.getTaskByID(5);
-        System.out.println("История просмотра \n" + inMemoryTaskManager.getHistory());
+        inMemoryTaskManager.addEpic(new Epic("Sport", "Epic_2", Status.NEW)); // id 7
 
-        System.out.println("Добавляем 11 просмотр");
-        inMemoryTaskManager.getTaskByID(6);
-        System.out.println("История просмотра \n" + inMemoryTaskManager.getHistory());
-        System.out.println("Самый старый taskid - 4 удален, всего лимит просмотра 10 задач");
+        System.out.println("Запрашиваем созданные задачи несколько раз в разном порядке.");
 
-        System.out.println("Инициализируем тесты функциональности:");
-        System.out.println("Смена статуса задачи:");
-        System.out.println(inMemoryTaskManager.getTaskByID(3));
-        inMemoryTaskManager.updateTask(new Task("Таск 3", Status.DONE, "Оплатить интернет"));
-        System.out.println(inMemoryTaskManager.getTaskByID(3));
-        System.out.println("Смена описания подзадачи:");
-        System.out.println(inMemoryTaskManager.getSubtaskByID(20));
-        inMemoryTaskManager.updateSubtask(new SubTask("Сабтаск 1", Status.NEW,
-                "Расписать задачи по дням", 15));
-        System.out.println(inMemoryTaskManager.getSubtaskByID(20));
-        System.out.println("Удаление задачи:");
-        System.out.println(inMemoryTaskManager.getTaskByID(13));
-        inMemoryTaskManager.removeTaskById(13);
-        System.out.println(inMemoryTaskManager.getTaskByID(13));
-        System.out.println("Удаление всех добавленных задач:");
-        inMemoryTaskManager.removeAllTasks();
-        inMemoryTaskManager.removeAllEpics();
-        inMemoryTaskManager.removeAllSubtasks();
-        System.out.printf(" %s \n %s \n %s", inMemoryTaskManager.getTasks(), inMemoryTaskManager.getEpics(), inMemoryTaskManager.getAllSubtasks());
+        inMemoryTaskManager.getTaskById(2);
+        inMemoryTaskManager.getSubtaskById(6);
+        inMemoryTaskManager.getEpicById(3);
+        inMemoryTaskManager.getTaskById(1);
+        inMemoryTaskManager.getSubtaskById(5);
+        inMemoryTaskManager.getSubtaskById(4);
+        inMemoryTaskManager.getEpicById(3);
+        inMemoryTaskManager.getTaskById(2);
+        inMemoryTaskManager.getSubtaskById(6);
+        inMemoryTaskManager.getEpicById(7);
+        inMemoryTaskManager.getEpicById(7);
+
+        System.out.println("Выводим историю и убеждаемся, что в ней нет повторов.");
+        List<Task> history = inMemoryTaskManager.getHistory();
+        System.out.println(history);
+
+        System.out.println("Удаляем задачу, которая есть в истории, и проверяем, что при печати она не будет выводиться.");
+        inMemoryTaskManager.removeTaskById(1);
+        history = inMemoryTaskManager.getHistory();
+        System.out.println(history);
+
+        System.out.println("Удаляем эпик с тремя подзадачами и убедждаемся, что из истории удалился как сам эпик, так и все его подзадачи.");
+        inMemoryTaskManager.removeEpicById(3);
+        history = inMemoryTaskManager.getHistory();
+        System.out.println(history);
+
+
     }
 }

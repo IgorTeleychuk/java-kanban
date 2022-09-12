@@ -1,52 +1,59 @@
 package service;
 
-import tasks.Task;
 import tasks.Epic;
-import tasks.SubTask;
+import tasks.Subtask;
+import tasks.Task;
 
-
-import java.util.*;
+import java.util.List;
 
 public interface TaskManager {
+    List<Task> getHistory();
 
-    void addTask(Task task);
+    void remove(int id);
 
-    void updateTask(Task task);
+    int addTask(Task task);
 
-    Collection<Task> getTasks();
+    int addEpic(Epic epic);
 
-    void addEpic(Epic epic);
+    int addSubtask(Subtask subtask);
 
-    void updateEpic (Epic epic);
+    void removeTaskById(int id);
 
-    Collection<Epic> getEpics();
+    void removeEpicById(int id);
 
-    Collection<SubTask> getAllSubtasks();
-
-    void addSubTask(SubTask subTask);
-
-    void updateSubtask (SubTask subTask);
-
-    ArrayList<SubTask> getSubTask(int epicId);
+    void removeSubtaskById(int id);
 
     void removeAllTasks();
 
     void removeAllEpics();
 
-    void removeAllSubtasks ();
+    void removeAllSubtasks();
 
-    void removeTaskById (int taskId);
+    Task getTaskById(int id);
 
-    void removeEpicById (int epicId);
+    Epic getEpicById(int id);
 
-    void removeSubtaskById (int epicId);
+    Subtask getSubtaskById(int id);
 
-    Task getTaskByID (int taskId);
+    List<Task> getAllTasks();
 
-    Epic getEpicByID (int epicId);
+    List<Epic> getAllEpics();
 
-    SubTask getSubtaskByID (int subtaskId);
+    List<Subtask> getAllSubtasks();
 
-    List<Task>getHistory();
+    List<Subtask> getAllSubtasksByEpicId(int id);
 
+    void updateTask(Task task);
+
+    void updateEpic(Epic epic);
+
+    void updateStatusEpic(Epic epic);
+
+    void updateSubtask(Subtask subtask);
+
+    void printTasks();
+
+    void printEpics();
+
+    void printSubtasks();
 }
