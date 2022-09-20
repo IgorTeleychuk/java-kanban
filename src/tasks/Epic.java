@@ -6,12 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import status.Status;
-
-import java.util.*;
-
 public class Epic extends Task {
-    private final List<Integer> subtaskIds = new ArrayList<>();
+    private List<Integer> subtaskIds = new ArrayList<>();
 
     public Epic(String description, String name, Status status) {
         super(description, name, status);
@@ -21,8 +17,12 @@ public class Epic extends Task {
         return subtaskIds;
     }
 
-    public void setSubtaskIds(int id) {
+    public void addSubtaskIds(int id) {
         subtaskIds.add(id);
+    }
+
+    public void addSubtaskAllIds(List<Integer> allIds) {
+        this.subtaskIds = allIds;
     }
 
     @Override
