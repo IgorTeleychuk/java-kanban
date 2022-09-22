@@ -237,7 +237,7 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
-    private void updateStatusEpic(Epic epic) {
+    public void updateStatusEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
             if (epic.getSubtaskIds().size() == 0) {
                 epic.setStatus(Status.NEW);
@@ -264,6 +264,20 @@ public class InMemoryTaskManager implements TaskManager {
             }
         } else {
             System.out.println("Epic not found");
+        }
+    }
+
+    public HistoryManager getHistoryManager() {
+        return historyManager;
+    }
+
+    public void addToHistory(int id) {
+        if (epics.containsKey(id)) {
+            historyManager.add(epics.get(id));
+        } else if (subtasks.containsKey(id)) {
+            historyManager.add(subtasks.get(id));
+        } else if (tasks.containsKey(id)) {
+            historyManager.add(tasks.get(id));
         }
     }
 }

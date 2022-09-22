@@ -4,10 +4,13 @@ import tasks.Epic;
 import tasks.Subtask;
 import service.*;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 
 public class Test {
-    public void testing() {
+
+    public void testing1() {
         TaskManager inMemoryTaskManager = Managers.getInMemoryTaskManager(Managers.getDefaultHistory());
         System.out.println("Создаем две задачи, эпик с тремя подзадачами и эпик без подзадач.");
         inMemoryTaskManager.addTask(new Task("Cleaning", "Task_1", Status.NEW)); // id 1
@@ -49,5 +52,41 @@ public class Test {
         System.out.println(history);
 
 
+    }
+
+    public void testing2() {
+        Path path = Path.of("src//data.csv");
+        File file = new File(String.valueOf(path));
+        FileBackedTasksManager manager = new FileBackedTasksManager(Managers.getDefaultHistory(), file);
+        Task firstTask = new Task("Write a song", "Task_3", Status.NEW);
+        manager.createTask(firstTask);
+        Task secondTask = new Task("Purchases", "Task_4", Status.NEW);
+        manager.createTask(secondTask);
+
+        Epic firstEpic = new Epic("Fix the table", "Epic_3", Status.NEW);
+        manager.createEpic(firstEpic);
+
+        Subtask firstSubtask = new Subtask("Buy nails", "Subtask_4", Status.NEW, firstEpic.getId());
+        manager.createSubtask(firstSubtask);
+
+        manager.getTaskById(firstTask.getId());
+        manager.getTaskById(secondTask.getId());
+        System.out.println();
+    }
+
+    public void testing3() {
+        System.out.println("Считывание из файла");
+        Path path2 = Path.of("src//data.csv");
+        File file2 = new File(String.valueOf(path2));
+        FileBackedTasksManager manager2 = new FileBackedTasksManager(Managers.getDefaultHistory(), file2);
+        manager2.loadFromFile();
+        System.out.println("Задачи");
+        System.out.println(manager2.getAllTasks());
+        System.out.println("Эпики");
+        System.out.println(manager2.getAllEpics());
+        System.out.println("Подзадачи");
+        System.out.println(manager2.getAllSubtasks());
+        System.out.println("История");
+        System.out.println(manager2.getHistory());
     }
 }
