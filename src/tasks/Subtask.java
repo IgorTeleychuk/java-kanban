@@ -1,7 +1,7 @@
 package tasks;
 
 import status.Status;
-
+import util.TaskType;
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -15,6 +15,9 @@ public class Subtask extends Task {
     public int getEpicId() {
         return epicId;
     }
+
+    @Override
+    public TaskType getType() { return TaskType.SUBTASK; }
 
     @Override
     public boolean equals(Object o) {

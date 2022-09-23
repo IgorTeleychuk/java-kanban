@@ -1,9 +1,9 @@
 package util;
 
 public class Node<T> {
-    public final T data;
-    public Node<T> next;
-    public Node<T> prev;
+    private T data;
+    private Node<T> next;
+    private Node<T> prev;
 
     public Node(T data, Node<T> next, Node<T> prev) {
         this.data = data;
@@ -25,5 +25,13 @@ public class Node<T> {
 
     public void setPrev(Node<T> prev) {
         this.prev = prev;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }

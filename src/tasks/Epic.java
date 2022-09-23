@@ -4,6 +4,7 @@ import status.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+import util.TaskType;
 import java.util.Objects;
 
 public class Epic extends Task {
@@ -24,6 +25,9 @@ public class Epic extends Task {
     public void addSubtaskAllIds(List<Integer> allIds) {
         this.subtaskIds = allIds;
     }
+
+    @Override
+    public TaskType getType() { return TaskType.EPIC; }
 
     @Override
     public boolean equals(Object o) {

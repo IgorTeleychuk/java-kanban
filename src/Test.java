@@ -59,15 +59,15 @@ public class Test {
         File file = new File(String.valueOf(path));
         FileBackedTasksManager manager = new FileBackedTasksManager(Managers.getDefaultHistory(), file);
         Task firstTask = new Task("Write a song", "Task_3", Status.NEW);
-        manager.createTask(firstTask);
+        manager.addTask(firstTask);
         Task secondTask = new Task("Purchases", "Task_4", Status.NEW);
-        manager.createTask(secondTask);
+        manager.addTask(secondTask);
 
         Epic firstEpic = new Epic("Fix the table", "Epic_3", Status.NEW);
-        manager.createEpic(firstEpic);
+        manager.addEpic(firstEpic);
 
         Subtask firstSubtask = new Subtask("Buy nails", "Subtask_4", Status.NEW, firstEpic.getId());
-        manager.createSubtask(firstSubtask);
+        manager.addSubtask(firstSubtask);
 
         manager.getTaskById(firstTask.getId());
         manager.getTaskById(secondTask.getId());
