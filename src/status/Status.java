@@ -1,7 +1,7 @@
 package status;
 
 public enum Status {
-    NEW("new"), IN_PROGRESS("inProgress"), DONE("done");
+    NEW("NEW"), IN_PROGRESS("IN_PROGRESS"), DONE("DONE");
     private String translation;
 
     Status() {

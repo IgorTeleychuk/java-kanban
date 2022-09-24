@@ -178,9 +178,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (epics.containsKey(id)) {
             List<Subtask> subtasksNew = new ArrayList<>();
             Epic epic = epics.get(id);
-            List<Integer> size = epic.getSubtaskIds();
-            for (int i : size) {
-                subtasksNew.add(subtasks.get(epic.getSubtaskIds().get(i)));
+            for (int subtaskId : epic.getSubtaskIds()) {
+                subtasksNew.add(subtasks.get(subtaskId));
             }
             return subtasksNew;
         } else {
@@ -230,25 +229,23 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.setStatus(Status.NEW);
             } else {
                 int countDone = 0;
-                int countInProgress = 0;
+                int countNew = 0;
 
                 for (int i = 0; i < epic.getSubtaskIds().size(); i++) {
                     if(subtasks.get(epic.getSubtaskIds().get(i)).getStatus() == Status.DONE){
                         countDone++;
                     }
-                    if(subtasks.get(epic.getSubtaskIds().get(i)).getStatus() == Status.IN_PROGRESS){
-                        countInProgress++;
+                    if(subtasks.get(epic.getSubtaskIds().get(i)).getStatus() == Status.NEW){
+                        countNew++;
                     }
                 }
 
                 if (countDone == epic.getSubtaskIds().size()) {
                     epic.setStatus(Status.DONE);
-                } else if (countInProgress == epic.getSubtaskIds().size()) {
-                    epic.setStatus(Status.IN_PROGRESS);
-                } else if (countDone == 0 && countInProgress == 0){
+                } else if (countNew == epic.getSubtaskIds().size()) {
                     epic.setStatus(Status.NEW);
-                } else {
-                    System.out.println("The status cannot be determined");
+                }  else {
+                    epic.setStatus(Status.IN_PROGRESS);
                 }
             }
         } else {

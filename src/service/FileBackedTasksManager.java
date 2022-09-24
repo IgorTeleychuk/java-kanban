@@ -1,10 +1,10 @@
 package service;
 
-import util.TaskType;
 import status.Status;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
+import util.TaskType;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -60,18 +60,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public void loadFromFile() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
-            int maxId = 0;
-            for(Integer i : tasks.keySet()){
-                if(i > maxId) { maxId = i; }
-            }
-            for(Integer i : subtasks.keySet()){
-                if(i > maxId) { maxId = i; }
-            }
-            for(Integer i : epics.keySet()){
-                if(i > maxId) { maxId = i; }
-            }
-            super.id = maxId;
-
 
             String line = bufferedReader.readLine();
             while (bufferedReader.ready()) {
@@ -79,28 +67,29 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 if (line.isEmpty()) {
                     break;
                 }
-
                 Task task = fromString(line);
+                if(task.getId() > super.id) {super.id = task.getId();}
 
-                if (task instanceof Epic) {
-                    int newEpicId = generateId();
-                    task.setId(newEpicId);
-                    epics.put(newEpicId, (Epic) task);
-                } else if (task instanceof Subtask) {
-                    int newSubtaskId = generateId();
-                    task.setId(newSubtaskId);
-                    Epic epic = epics.get(((Subtask) task).getEpicId());
-                    if (epic != null) {
-                        subtasks.put(newSubtaskId, (Subtask) task);
-                        epic.addSubtaskIds(newSubtaskId);
-                        updateStatusEpic(epic);
-                    } else {
-                        System.out.println("Epic not found");
-                    }
-                } else {
-                    int newTaskId = generateId();
-                    task.setId(newTaskId);
-                    tasks.put(newTaskId, task);
+                switch (task.getType()){
+                    case EPIC:
+                        epics.put(task.getId(), (Epic) task);
+                        break;
+                    case SUBTASK:
+                        Epic epic = null;
+                        if (task instanceof Subtask) {
+                            epic = epics.get(((Subtask) task).getEpicId());
+                        }
+                        if (epic != null) {
+                            subtasks.put(task.getId(), (Subtask) task);
+                            epic.addSubtaskIds(task.getId());
+                            updateStatusEpic(epic);
+                        } else {
+                            System.out.println("Epic not found");
+                        }
+                        break;
+                    default:
+                        tasks.put(task.getId(), task);
+
                 }
             }
 
@@ -151,20 +140,22 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private Task fromString(String value) {
         String[] params = value.split(",");
-        if (params[1].equals("EPIC")) {
-            Epic epic = new Epic(params[4], params[2], Status.valueOf(params[3].toUpperCase()));
-            epic.setId(Integer.parseInt(params[0]));
-            epic.setStatus(Status.valueOf(params[3].toUpperCase()));
-            return epic;
-        } else if (params[1].equals("SUBTASK")) {
-            Subtask subtask = new Subtask(params[4], params[2], Status.valueOf(params[3].toUpperCase()),
-                    Integer.parseInt(params[5]));
-            subtask.setId(Integer.parseInt(params[0]));
-            return subtask;
-        } else {
-            Task task = new Task(params[4], params[2], Status.valueOf(params[3].toUpperCase()));
-            task.setId(Integer.parseInt(params[0]));
-            return task;
+
+        switch (TaskType.valueOf(params[1])){
+            case EPIC:
+                Epic epic = new Epic(params[4], params[2], Status.valueOf(params[3]));
+                epic.setId(Integer.parseInt(params[0]));
+                epic.setStatus(Status.valueOf(params[3]));
+                return epic;
+            case SUBTASK:
+                Subtask subtask = new Subtask(params[4], params[2], Status.valueOf(params[3]),
+                        Integer.parseInt(params[5]));
+                subtask.setId(Integer.parseInt(params[0]));
+                return subtask;
+            default:
+                Task task = new Task(params[4], params[2], Status.valueOf(params[3]));
+                task.setId(Integer.parseInt(params[0]));
+                return task;
         }
     }
 
@@ -261,10 +252,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private static String historyToString(HistoryManager manager) {
         List<Task> history = manager.getHistory();
         StringBuilder str = new StringBuilder();
-
-        if (history.isEmpty()) {
-            return "";
-        }
 
         for (Task task : history) {
             str.append(task.getId()).append(",");
