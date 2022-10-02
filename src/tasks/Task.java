@@ -2,6 +2,10 @@ package tasks;
 
 import status.Status;
 import util.TaskType;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -9,11 +13,27 @@ public class Task {
     private int id;
     private String name;
     private Status status;
+    int duration;
+    LocalDateTime startTime;
 
-    public Task(String description, String name, Status status) {
+    public Task(String description, String name, Status status, LocalDateTime startTime,int duration) {
         this.description = description;
         this.name = name;
         this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime(){
+        return this.startTime.plus(Duration.ofMinutes(this.duration));
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
     public String getDescription() {
@@ -68,11 +88,9 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "description='" + description + '\'' +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", status=" + status +
-                '}' + "\n";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
+
+        return id + "," + TaskType.TASK + "," + name + "," + status + "," + description +","+
+                startTime.format(formatter) +","+ this.getEndTime().format(formatter) +","+ duration +",\n";
     }
 }

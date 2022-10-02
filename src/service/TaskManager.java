@@ -5,6 +5,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TaskManager {
     List<Task> getHistory();
@@ -48,5 +49,12 @@ public interface TaskManager {
    // void updateStatusEpic(Epic epic);
 
     void updateSubtask(Subtask subtask);
+
+    void findStartTimeAndDurationOfEpic(Epic epic);
+
+    Map<Integer, Task> getTaskList();
+
+    Map<Integer, Epic> getEpicsList();
+    Map<Integer, Subtask> getSubtasksList();
 
 }

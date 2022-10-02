@@ -2,16 +2,39 @@ package tasks;
 
 import status.Status;
 
+
+import java.time.Duration;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import util.TaskType;
 import java.util.Objects;
+import java.time.LocalDateTime;
 
 public class Epic extends Task {
     private List<Integer> subtaskIds = new ArrayList<>();
 
+    private LocalDateTime endTime;
+
     public Epic(String description, String name, Status status) {
-        super(description, name, status);
+        super(description, name, status, LocalDateTime.of(2022,01,01,00,00),0);
+        this.startTime = getStartTime();
+        this.endTime = getEndTime();
+        this.duration = getDuration();
+    }
+
+    public void setStartTime(LocalDateTime startTime){
+        this.startTime = startTime;
+    }
+    public void setEndTime(LocalDateTime endTime){
+        this.endTime = endTime;
+    }
+    public void setDuration(int duration){
+        this.duration = duration;
+    }
+    @Override
+    public LocalDateTime getEndTime(){
+        return this.startTime.plusMinutes(this.duration);
     }
 
     public List<Integer> getSubtaskIds() {
@@ -45,13 +68,9 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
-                "subtaskIds=" + subtaskIds +
-                ", description='" + getDescription() + '\'' +
-                ", id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", status=" + getStatus() +
-                '}' + "\n";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
+        return getId() + "," + TaskType.EPIC + "," + getName() + "," + getStatus() + "," + getDescription() +","+
+                startTime.format(formatter)+","+ this.getEndTime().format(formatter)+ ","+ duration +",\n";
     }
 }
 

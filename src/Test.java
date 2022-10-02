@@ -6,6 +6,9 @@ import service.*;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class Test {
@@ -13,13 +16,13 @@ public class Test {
     public void testing1() {
         TaskManager inMemoryTaskManager = Managers.getInMemoryTaskManager(Managers.getDefaultHistory());
         System.out.println("Создаем две задачи, эпик с тремя подзадачами и эпик без подзадач.");
-        inMemoryTaskManager.addTask(new Task("Cleaning", "Task_1", Status.NEW)); // id 1
-        inMemoryTaskManager.addTask(new Task("Training", "Task_2", Status.NEW)); // id 2
+        inMemoryTaskManager.addTask(new Task("Cleaning", "Task_1", Status.NEW, LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40)); // id 1
+        inMemoryTaskManager.addTask(new Task("Training", "Task_2", Status.NEW, LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40)); // id 2
 
         inMemoryTaskManager.addEpic(new Epic("Work", "Epic_1", Status.NEW)); // id 3
-        inMemoryTaskManager.addSubtask(new Subtask("Meeting", "Subtask_1", Status.NEW, 3)); // id 4
-        inMemoryTaskManager.addSubtask(new Subtask("Project", "Subtask_2", Status.NEW, 3)); // id 5
-        inMemoryTaskManager.addSubtask(new Subtask("Report", "Subtask_3", Status.NEW, 3)); // id 6
+        inMemoryTaskManager.addSubtask(new Subtask("Meeting", "Subtask_1", Status.NEW, 3, LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40)); // id 4
+        inMemoryTaskManager.addSubtask(new Subtask("Project", "Subtask_2", Status.NEW, 3, LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40)); // id 5
+        inMemoryTaskManager.addSubtask(new Subtask("Report", "Subtask_3", Status.NEW, 3, LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40)); // id 6
 
         inMemoryTaskManager.addEpic(new Epic("Sport", "Epic_2", Status.NEW)); // id 7
 
@@ -58,16 +61,20 @@ public class Test {
         Path path = Path.of("src//data.csv");
         File file = new File(String.valueOf(path));
         FileBackedTasksManager manager = new FileBackedTasksManager(Managers.getDefaultHistory(), file);
-        Task firstTask = new Task("Write a song", "Task_3", Status.NEW);
+        Task firstTask = new Task("Write a song", "Task_3", Status.NEW, LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40);
         manager.addTask(firstTask);
-        Task secondTask = new Task("Purchases", "Task_4", Status.NEW);
+        Task secondTask = new Task("Purchases", "Task_4", Status.NEW, LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40);
         manager.addTask(secondTask);
 
         Epic firstEpic = new Epic("Fix the table", "Epic_3", Status.NEW);
         manager.addEpic(firstEpic);
 
-        Subtask firstSubtask = new Subtask("Buy nails", "Subtask_4", Status.NEW, firstEpic.getId());
+        Subtask firstSubtask = new Subtask("Buy nails", "Subtask_4", Status.NEW, firstEpic.getId(), LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40);
         manager.addSubtask(firstSubtask);
+        Subtask secondSubtask = new Subtask("Buy nails Two", "Subtask_5", Status.NEW, firstEpic.getId(), LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40);
+        manager.addSubtask(secondSubtask);
+        Subtask thirdSubtask = new Subtask("Buy nails Three", "Subtask_6", Status.NEW, firstEpic.getId(), LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 12)), 40);
+        manager.addSubtask(thirdSubtask);
 
         manager.getTaskById(firstTask.getId());
         manager.getTaskById(secondTask.getId());
