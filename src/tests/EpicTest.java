@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 
-import status.Status;
-import service.InMemoryTaskManager;
-import tasks.Epic;
-import tasks.Subtask;
+import main.status.Status;
+import main.service.InMemoryTaskManager;
+import main.tasks.Epic;
+import main.tasks.Subtask;
 
 
 
@@ -21,7 +21,7 @@ class EpicTest {
     void beforeEach(){
         epic1 = new Epic("Test description", "TestEpic", Status.NEW);
         taskManagerOne.addEpic(epic1);
-        subTask1 = new Subtask("Test description", "TestSubTask", Status.NEW, epic1.getId(),LocalDateTime.of(2022,8,10,12,0),30);
+        subTask1 = new Subtask("Test description", "TestSubTask", Status.NEW, epic1.getId(),LocalDateTime.of(2022,8,9,12,0),30);
         taskManagerOne.addSubtask(subTask1);
         subTask2 = new Subtask("Test description", "TestSubTask", Status.NEW, epic1.getId(),LocalDateTime.of(2022,8,10,12,0),30);
         taskManagerOne.addSubtask(subTask2);

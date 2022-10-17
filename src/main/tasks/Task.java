@@ -1,7 +1,7 @@
-package tasks;
+package main.tasks;
 
-import status.Status;
-import util.TaskType;
+import main.status.Status;
+import main.util.TaskType;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -13,8 +13,10 @@ public class Task {
     private int id;
     private String name;
     private Status status;
-    int duration;
+    private int duration;
     LocalDateTime startTime;
+
+    private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
 
     public Task(String description, String name, Status status, LocalDateTime startTime,int duration) {
         this.description = description;
@@ -25,11 +27,22 @@ public class Task {
     }
 
     public LocalDateTime getEndTime(){
-        return this.startTime.plus(Duration.ofMinutes(this.duration));
+        try {
+            return this.startTime.plus(Duration.ofMinutes(this.duration));
+        } catch (NullPointerException e){
+            System.out.print("NullPointerException caught");
+            return null;
+        }
     }
+
+    public DateTimeFormatter getFormatter () { return FORMATTER; }
 
     public int getDuration() {
         return duration;
+    }
+
+    public void setDuration(int duration){
+        this.duration = duration;
     }
 
     public LocalDateTime getStartTime() {
@@ -77,8 +90,9 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(description, task.description) && Objects.equals(name, task.name)
-                && status == task.status;
+        return id == task.id && Objects.equals(description, task.description) && Objects.equals(name, task.name) &&
+                status == task.status && Objects.equals(startTime, task.startTime) &&
+                Objects.equals(duration, task.duration);
     }
 
     @Override
@@ -88,9 +102,11 @@ public class Task {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
-
-        return id + "," + TaskType.TASK + "," + name + "," + status + "," + description +","+
-                startTime.format(formatter) +","+ this.getEndTime().format(formatter) +","+ duration +",\n";
+        if (startTime != null) {
+            return id + "," + TaskType.TASK + "," + name + "," + status + "," + description + "," +
+                    startTime.format(FORMATTER) + "," + this.getEndTime().format(FORMATTER) + "," + duration + ",\n";
+        } else {
+            return "startTime = null";
+        }
     }
 }

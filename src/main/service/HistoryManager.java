@@ -1,6 +1,6 @@
-package service;
+package main.service;
 
-import tasks.Task;
+import main.tasks.Task;
 import java.util.List;
 
 public interface HistoryManager {

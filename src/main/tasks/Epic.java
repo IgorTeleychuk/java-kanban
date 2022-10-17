@@ -1,13 +1,11 @@
-package tasks;
+package main.tasks;
 
-import status.Status;
+import main.status.Status;
 
 
-import java.time.Duration;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import util.TaskType;
+import main.util.TaskType;
 import java.util.Objects;
 import java.time.LocalDateTime;
 
@@ -20,7 +18,6 @@ public class Epic extends Task {
         super(description, name, status, LocalDateTime.of(2022,01,01,00,00),0);
         this.startTime = getStartTime();
         this.endTime = getEndTime();
-        this.duration = getDuration();
     }
 
     public void setStartTime(LocalDateTime startTime){
@@ -29,12 +26,10 @@ public class Epic extends Task {
     public void setEndTime(LocalDateTime endTime){
         this.endTime = endTime;
     }
-    public void setDuration(int duration){
-        this.duration = duration;
-    }
+
     @Override
     public LocalDateTime getEndTime(){
-        return this.startTime.plusMinutes(this.duration);
+        return this.startTime.plusMinutes(getDuration());
     }
 
     public List<Integer> getSubtaskIds() {
@@ -58,7 +53,7 @@ public class Epic extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
-        return Objects.equals(subtaskIds, epic.subtaskIds);
+        return Objects.equals(subtaskIds, epic.subtaskIds) && Objects.equals(endTime, epic.endTime);
     }
 
     @Override
@@ -68,9 +63,12 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
-        return getId() + "," + TaskType.EPIC + "," + getName() + "," + getStatus() + "," + getDescription() +","+
-                startTime.format(formatter)+","+ this.getEndTime().format(formatter)+ ","+ duration +",\n";
+        if (startTime != null) {
+            return getId() + "," + TaskType.EPIC + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
+                    startTime.format(getFormatter()) + "," + this.getEndTime().format(getFormatter()) + "," + getDuration() + ",\n";
+        } else {
+            return "startTime = null";
+        }
     }
 }
 

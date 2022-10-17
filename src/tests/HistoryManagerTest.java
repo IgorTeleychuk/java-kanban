@@ -1,13 +1,13 @@
 package tests;
 
-import status.Status;
-import service.InMemoryHistoryManager;
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
+import main.status.Status;
+import main.service.InMemoryHistoryManager;
+import main.tasks.Epic;
+import main.tasks.Subtask;
+import main.tasks.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.HistoryManager;
+import main.service.HistoryManager;
 
 import java.time.LocalDateTime;
 import java.util.List;

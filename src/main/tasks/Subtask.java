@@ -1,10 +1,9 @@
-package tasks;
+package main.tasks;
 
-import status.Status;
-import util.TaskType;
+import main.status.Status;
+import main.util.TaskType;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 
@@ -39,9 +38,12 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
-        return getId() + "," + TaskType.SUBTASK + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
-                getStartTime().format(formatter) +","+ this.getEndTime().format(formatter)+ ","
-                + getDuration() +","+ epicId + "\n";
+        if (startTime != null) {
+            return getId() + "," + TaskType.SUBTASK + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
+                    getStartTime().format(getFormatter()) + "," + this.getEndTime().format(getFormatter()) + ","
+                    + getDuration() + "," + epicId + "\n";
+        } else {
+            return "startTime = null";
+        }
     }
 }

@@ -1,7 +1,7 @@
-package service;
+package main.service;
 
-import tasks.Task;
-import util.CustomLinkedList;
+import main.tasks.Task;
+import main.util.CustomLinkedList;
 
 import java.util.*;
 

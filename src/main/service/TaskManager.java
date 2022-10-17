@@ -1,8 +1,8 @@
-package service;
+package main.service;
 
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
+import main.tasks.Epic;
+import main.tasks.Subtask;
+import main.tasks.Task;
 
 import java.util.List;
 import java.util.Map;
@@ -57,4 +57,5 @@ public interface TaskManager {
     Map<Integer, Epic> getEpicsList();
     Map<Integer, Subtask> getSubtasksList();
 
+    public boolean validation (Task task);
 }
