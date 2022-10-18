@@ -26,6 +26,7 @@ class EpicTest {
         subTask2 = new Subtask("Test description", "TestSubTask", Status.NEW, epic1.getId(),LocalDateTime.of(2022,8,10,12,0),30);
         taskManagerOne.addSubtask(subTask2);
     }
+
     @Test
     void addNewEpic() {
         Epic epic2 = new Epic("Test description", "TestEpic", Status.NEW);
@@ -33,6 +34,7 @@ class EpicTest {
         taskManagerOne.updateStatusEpic(epic2);
         assertEquals(epic2.getStatus(),Status.NEW,"Неверно обновляется статус пустого эпика");
     }
+
     @Test
     void addEpicWithSubTasksNew(){
         assertNotNull(taskManagerOne.getSubtaskTest(subTask1.getId()),"Подзадачи не возвращаются.");
@@ -41,6 +43,7 @@ class EpicTest {
         assertEquals(subTask1.getEpicId(),epic1.getId(),"Id эпика подзадачи не равно id эпика");
         assertEquals(epic1.getStatus(),Status.NEW,"Неверно обновляется статус эпика");
     }
+
     @Test
     void addEpicWithSubTasksDone(){
         subTask1.setStatus(Status.DONE);
@@ -52,6 +55,7 @@ class EpicTest {
         assertEquals(subTask1.getEpicId(),epic1.getId(),"Id эпика подзадачи не равно id эпика");
         assertEquals(epic1.getStatus(),Status.DONE,"Неверно обновляется статус эпика");
     }
+
     @Test
     void addEpicWithSubTasksNewAndDone(){
         subTask1.setStatus(Status.DONE);
@@ -63,6 +67,7 @@ class EpicTest {
         assertEquals(subTask1.getEpicId(),epic1.getId(),"Id эпика подзадачи не равно id эпика");
         assertEquals(epic1.getStatus(),Status.IN_PROGRESS,"Неверно обновляется статус эпика");
     }
+
     @Test
     void addEpicWithSubTasksInProgress(){
         subTask1.setStatus(Status.IN_PROGRESS);

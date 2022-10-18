@@ -94,8 +94,6 @@ class FileBackedTasksManagerTest extends TaskManagersTest<FileBackedTasksManager
         test.getEpicById(2);
         test.getSubtaskById(3);
 
-        System.out.println(test.getTaskList());
-        System.out.println(test.getTaskList());
         assertEquals(test.getTaskList(), test.getTaskList(),
                 "Список задач после выгрузки не совпадает");
         assertEquals(test.getSubtasksList(), test.getSubtasksList(),
