@@ -32,7 +32,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addTask(Task task) {
+    public Task addTask(Task task) {
         int newTaskId = generateId();
         task.setId(newTaskId);
         tasks.put(newTaskId, task);
@@ -41,20 +41,20 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("Error adding to the sorted list.");
         }
-        return newTaskId;
+        return task;
     }
 
     @Override
-    public int addEpic(Epic epic) {
+    public Epic addEpic(Epic epic) {
         int newEpicId = generateId();
         epic.setId(newEpicId);
         epics.put(newEpicId, epic);
         findStartTimeAndDurationOfEpic(epic);
-        return newEpicId;
+        return epic;
     }
 
     @Override
-    public int addSubtask(Subtask subtask) {
+    public Subtask addSubtask(Subtask subtask) {
         int newSubtaskId = generateId();
         subtask.setId(newSubtaskId);
         Epic epic = epics.get(subtask.getEpicId());
@@ -69,10 +69,10 @@ public class InMemoryTaskManager implements TaskManager {
             } else {
                 System.out.println("Error adding to the sorted list.");
             }
-            return newSubtaskId;
+            return subtask;
         } else {
             System.out.println("Epic not found");
-            return -1;
+            return null;
         }
     }
 
@@ -297,6 +297,7 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager;
     }
 
+    @Override
     public Set<Task> getPrioritizedTasks() {
         return prioritizedTasks;
     }

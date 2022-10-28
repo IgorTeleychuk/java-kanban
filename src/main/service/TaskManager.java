@@ -6,15 +6,16 @@ import main.tasks.Task;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface TaskManager {
     List<Task> getHistory();
 
-    int addTask(Task task);
+    Task addTask(Task task);
 
-    int addEpic(Epic epic);
+    Epic addEpic(Epic epic);
 
-    int addSubtask(Subtask subtask);
+    Subtask addSubtask(Subtask subtask);
 
     void removeTaskById(int id);
 
@@ -57,5 +58,7 @@ public interface TaskManager {
     Map<Integer, Epic> getEpicsList();
     Map<Integer, Subtask> getSubtasksList();
 
-    public boolean validation (Task task);
+    boolean validation (Task task);
+
+    Set<Task> getPrioritizedTasks();
 }

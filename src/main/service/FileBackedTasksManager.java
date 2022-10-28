@@ -18,13 +18,17 @@ import java.io.IOException;
 
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private final File file;
+    private File file;
     private static final String HEADER_CSV_FILE = "id,type,name,status,description,starttime,endtime,duration,epic\n";
     private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
 
     public FileBackedTasksManager(HistoryManager historyManager, File file) {
         super(historyManager);
         this.file = file;
+    }
+
+    public FileBackedTasksManager(HistoryManager historyManager) {
+        super(historyManager);
     }
 
     public void loadFromFile() {
@@ -151,24 +155,24 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int addTask(Task task) {
-        int newTaskId = super.addTask(task);
+    public Task addTask(Task task) {
+        Task newTask = super.addTask(task);
         save();
-        return newTaskId;
+        return newTask;
     }
 
     @Override
-    public int addEpic(Epic epic) {
-        int newEpicId = super.addEpic(epic);
+    public Epic addEpic(Epic epic) {
+        Epic newEpic = super.addEpic(epic);
         save();
-        return newEpicId;
+        return newEpic;
     }
 
     @Override
-    public int addSubtask(Subtask subtask) {
-        int newSubtaskId = super.addSubtask(subtask);
+    public Subtask addSubtask(Subtask subtask) {
+        Subtask newSubtask = super.addSubtask(subtask);
         save();
-        return newSubtaskId;
+        return newSubtask;
     }
 
     @Override
