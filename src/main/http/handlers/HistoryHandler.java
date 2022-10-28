@@ -1,11 +1,10 @@
 package main.http.handlers;
 
-import adapters.InstantAdapter;
+import main.adapters.InstantAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
 import main.service.TaskManager;
 
 import java.io.IOException;

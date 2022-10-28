@@ -1,7 +1,6 @@
 package main;
 
-import adapters.InstantAdapter;
-import adapters.LocalDateTimeAdapter;
+import main.adapters.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import main.http.KVServer;
@@ -13,7 +12,6 @@ import main.tasks.Epic;
 import main.tasks.Subtask;
 import main.tasks.Task;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

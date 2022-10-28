@@ -1,6 +1,6 @@
 package tests;
 
-import adapters.InstantAdapter;
+import main.adapters.InstantAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;

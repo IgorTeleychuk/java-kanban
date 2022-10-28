@@ -1,6 +1,6 @@
 package main.http;
 
-import adapters.InstantAdapter;
+import main.adapters.InstantAdapter;
 import com.google.gson.*;
 import main.service.FileBackedTasksManager;
 import main.service.HistoryManager;
