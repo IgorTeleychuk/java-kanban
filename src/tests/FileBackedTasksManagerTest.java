@@ -1,4 +1,3 @@
-package tests;
 
 import main.service.FileBackedTasksManager;
 import main.service.InMemoryTaskManager;

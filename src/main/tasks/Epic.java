@@ -16,20 +16,17 @@ public class Epic extends Task {
 
     public Epic(String description, String name, Status status) {
         super(description, name, status, LocalDateTime.of(2022,01,01,00,00),0);
-        this.startTime = getStartTime();
+        this.setStartTime(getStartTime());
         this.endTime = getEndTime();
     }
 
-    public void setStartTime(LocalDateTime startTime){
-        this.startTime = startTime;
-    }
     public void setEndTime(LocalDateTime endTime){
         this.endTime = endTime;
     }
 
     @Override
     public LocalDateTime getEndTime(){
-        return this.startTime.plusMinutes(getDuration());
+        return this.getStartTime().plusMinutes(getDuration());
     }
 
     public List<Integer> getSubtaskIds() {
@@ -63,9 +60,9 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        if (startTime != null) {
+        if (getStartTime() != null) {
             return getId() + "," + TaskType.EPIC + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
-                    startTime.format(getFormatter()) + "," + this.getEndTime().format(getFormatter()) + "," + getDuration() + ",\n";
+                    getStartTime().format(getFormatter()) + "," + this.getEndTime().format(getFormatter()) + "," + getDuration() + ",\n";
         } else {
             return "startTime = null";
         }

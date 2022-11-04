@@ -38,7 +38,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        if (startTime != null) {
+        if (getStartTime() != null) {
             return getId() + "," + TaskType.SUBTASK + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
                     getStartTime().format(getFormatter()) + "," + this.getEndTime().format(getFormatter()) + ","
                     + getDuration() + "," + epicId + "\n";

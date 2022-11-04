@@ -1,4 +1,3 @@
-package tests;
 
 import main.exeptions.ValidationException;
 import org.junit.jupiter.api.AfterEach;
@@ -114,16 +113,22 @@ abstract class TaskManagersTest <T extends TaskManager>{
 
     @Test
     void validationTest(){
+        Task task1 = new Task("Test description", "TestTask",Status.NEW,
+                LocalDateTime.of(2022,8,10,12,0),30);
         manager.addTask(task);
         manager.addEpic(epic);
-        assertEquals(manager.validation(task),true,"Tasks are incorrectly validated");
+        assertThrows(ValidationException.class, () -> manager.addTask(task1), "Tasks are incorrectly validated");
     }
     @Test
     void inValidationTest(){
         Task inValidTask = new Task("A","B",Status.NEW,LocalDateTime.of(2022,8,10,12,0),50);
+        Task inValidTask1 = new Task("A","B",Status.NEW,LocalDateTime.of(2022,8,10,12,0),50);
         manager.addTask(inValidTask);
+        manager.addTask(inValidTask1);
         manager.addEpic(epic);
-        assertEquals(manager.validation(inValidTask),true,"Tasks are incorrectly validated");
+        assertThrows(ValidationException.class, () -> manager.addTask(inValidTask), "Tasks are incorrectly validated");
+
+
     }
 
     @Test

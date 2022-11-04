@@ -1,4 +1,3 @@
-package tests;
 
 import main.service.InMemoryTaskManager;
 import main.status.Status;

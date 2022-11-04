@@ -10,11 +10,11 @@ import java.util.Objects;
 
 public class Task {
     private String description;
-    private int id;
+    private Integer id;
     private String name;
     private Status status;
     private int duration;
-    LocalDateTime startTime;
+    private LocalDateTime startTime;
 
     private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
 
@@ -47,6 +47,10 @@ public class Task {
 
     public LocalDateTime getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public String getDescription() {

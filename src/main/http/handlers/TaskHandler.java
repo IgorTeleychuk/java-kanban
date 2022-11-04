@@ -1,33 +1,22 @@
 package main.http.handlers;
 
-import main.adapters.InstantAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import main.service.TaskManager;
 import main.tasks.Task;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 
-public class TaskHandler implements HttpHandler {
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
-    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    private final TaskManager taskManager;
+public class TaskHandler extends BaseHandler {
 
     public TaskHandler(TaskManager taskManager) {
-        this.taskManager = taskManager;
+        super(taskManager);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         int statusCode;
-        String response;
         String method = httpExchange.getRequestMethod();
         String path = String.valueOf(httpExchange.getRequestURI());
 
@@ -61,7 +50,12 @@ public class TaskHandler implements HttpHandler {
                 }
                 break;
             case "POST":
-                String bodyRequest = new String(httpExchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+                String bodyRequest = readText(httpExchange);
+                if(bodyRequest.isEmpty()){
+                    statusCode = 400;
+                    httpExchange.sendResponseHeaders(statusCode, 0);
+                    return;
+                }
                 try {
                     Task task = gson.fromJson(bodyRequest, Task.class);
                     int id = task.getId();
@@ -108,9 +102,6 @@ public class TaskHandler implements HttpHandler {
 
         httpExchange.getResponseHeaders().set("Content-Type", "text/plain; charset=" + DEFAULT_CHARSET);
         httpExchange.sendResponseHeaders(statusCode, 0);
-
-        try (OutputStream os = httpExchange.getResponseBody()) {
-            os.write(response.getBytes());
-        }
+        writers(httpExchange);
     }
 }

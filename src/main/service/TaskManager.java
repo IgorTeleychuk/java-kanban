@@ -58,7 +58,9 @@ public interface TaskManager {
     Map<Integer, Epic> getEpicsList();
     Map<Integer, Subtask> getSubtasksList();
 
-    boolean validation (Task task);
+    void validation (Task task);
 
     Set<Task> getPrioritizedTasks();
+
+    void setPrioritizedTasks(Task task);
 }

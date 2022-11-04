@@ -1,34 +1,22 @@
 package main.http.handlers;
 
-import main.adapters.InstantAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import main.service.TaskManager;
 import main.tasks.Subtask;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 
-public class SubtaskHandler implements HttpHandler {
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
-    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    private final TaskManager taskManager;
+public class SubtaskHandler extends BaseHandler {
 
     public SubtaskHandler(TaskManager taskManager) {
-        this.taskManager = taskManager;
+        super(taskManager);
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         int statusCode;
-        String response;
-
         String method = exchange.getRequestMethod();
 
         switch (method) {
@@ -57,7 +45,12 @@ public class SubtaskHandler implements HttpHandler {
                 }
                 break;
             case "POST":
-                String bodyRequest = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+                String bodyRequest = readText(exchange);
+                if(bodyRequest.isEmpty()){
+                    statusCode = 400;
+                    exchange.sendResponseHeaders(statusCode, 0);
+                    return;
+                }
                 try {
                     Subtask subtask = gson.fromJson(bodyRequest, Subtask.class);
                     int id = subtask.getId();
@@ -106,9 +99,6 @@ public class SubtaskHandler implements HttpHandler {
 
         exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=" + DEFAULT_CHARSET);
         exchange.sendResponseHeaders(statusCode, 0);
-
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(response.getBytes());
-        }
+        writers(exchange);
     }
 }

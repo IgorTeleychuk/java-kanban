@@ -1,5 +1,7 @@
 package main.http;
 
+import main.exeptions.KVTaskClientGetTokenException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -9,13 +11,17 @@ import java.nio.charset.StandardCharsets;
 
 public class KVTaskClient {
 
-    private final String apiToken;
+    private String apiToken;
 
     private final String serverURL;
 
     public KVTaskClient(String serverURL) throws IOException, InterruptedException {
         this.serverURL = serverURL;
+        data();
 
+    }
+
+    private void data() throws IOException, InterruptedException {
         URI uri = URI.create(this.serverURL + "/register");
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -26,8 +32,10 @@ public class KVTaskClient {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = client.send(request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+                HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) {
+            throw new KVTaskClientGetTokenException("Failed to get a token");
+        }
         apiToken = response.body();
     }
 
@@ -42,14 +50,14 @@ public class KVTaskClient {
 
         HttpClient client = HttpClient.newHttpClient();
         try {
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8)
-            );
+            HttpResponse<Void> response = client.send(request,
+                    HttpResponse.BodyHandlers.discarding());
             if (response.statusCode() != 200) {
-                System.out.println("Не удалось сохранить данные");
+                throw new KVTaskClientGetTokenException("Failed to save data");
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+            throw new KVTaskClientGetTokenException("Failed data");
         }
     }
 
@@ -65,12 +73,14 @@ public class KVTaskClient {
         HttpClient client = HttpClient.newHttpClient();
         try {
             HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8)
-            );
+                    HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            if (response.statusCode() != 200) {
+                throw new KVTaskClientGetTokenException("Failed to save data");
+            }
             return response.body();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return "Во время запроса произошла ошибка";
+            throw new KVTaskClientGetTokenException("Failed data");
         }
     }
 }

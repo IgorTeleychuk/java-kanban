@@ -1,4 +1,3 @@
-package tests;
 
 import main.http.HTTPTaskManager;
 import main.http.KVServer;
@@ -14,7 +13,6 @@ import main.tasks.Subtask;
 import main.tasks.Task;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,16 +22,15 @@ class HTTPTaskManagerTest<T extends TaskManagersTest<HTTPTaskManager>> {
     private KVServer server;
     private TaskManager manager;
 
+    private HTTPTaskManager httpTaskManager;
+
     @BeforeEach
-    public void createManager() {
-        try {
+    public void createManager() throws IOException, InterruptedException {
             server = new KVServer();
             server.start();
             HistoryManager historyManager = Managers.getDefaultHistory();
             manager = Managers.getDefault(historyManager);
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Ошибка при создании менеджера");
-        }
+
     }
 
     @AfterEach
@@ -42,7 +39,7 @@ class HTTPTaskManagerTest<T extends TaskManagersTest<HTTPTaskManager>> {
     }
 
     @Test
-    public void shouldLoadTasks() {
+    public void shouldLoadTasks() throws IOException, InterruptedException {
         Task task1 = new Task("Test description 1", "TestTask 1",Status.NEW,
                 LocalDateTime.of(2022,1,1,1,0),10);
         Task task2 = new Task ("Test description 2", "TestTask 2",Status.NEW,
@@ -53,10 +50,20 @@ class HTTPTaskManagerTest<T extends TaskManagersTest<HTTPTaskManager>> {
         manager.getTaskById(task2.getId());
         List<Task> list = manager.getHistory();
         assertEquals(manager.getAllTasks(), list);
+
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        httpTaskManager = new HTTPTaskManager(historyManager, "http://localhost:" + KVServer.PORT, true);
+        assertEquals(manager.getTaskList(), httpTaskManager.getTaskList(),
+                "The list of tasks after unloading does not match");
+        assertEquals(manager.getHistory(), httpTaskManager.getHistory(),
+                "The list of history after unloading does not match");
+        assertEquals(manager.getPrioritizedTasks(), httpTaskManager.getPrioritizedTasks(),
+                "The list of prioritized tasks after unloading does not match");
+
     }
 
     @Test
-    public void shouldLoadEpics() {
+    public void shouldLoadEpics() throws IOException, InterruptedException {
         Epic epic1 = new Epic("TestEpic 1", "Test description 1", Status.NEW);
         Epic epic2 = new Epic("TestEpic 2", "Test description 2", Status.NEW);
         manager.addEpic(epic1);
@@ -65,10 +72,17 @@ class HTTPTaskManagerTest<T extends TaskManagersTest<HTTPTaskManager>> {
         manager.getEpicById(epic2.getId());
         List<Task> list = manager.getHistory();
         assertEquals(manager.getAllEpics(), list);
+
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        httpTaskManager = new HTTPTaskManager(historyManager, "http://localhost:" + KVServer.PORT, true);
+        assertEquals(manager.getEpicsList(), httpTaskManager.getEpicsList(),
+                "The list of epics after unloading does not match");
+        assertEquals(manager.getHistory(), httpTaskManager.getHistory(),
+                "The list of history after unloading does not match");
     }
 
     @Test
-    public void shouldLoadSubtasks() {
+    public void shouldLoadSubtasks() throws IOException, InterruptedException {
         Epic epic1 = new Epic("TestEpic", "Test description", Status.NEW);
         Subtask subtask1 = new Subtask("Test description", "TestSubTask", Status.NEW, epic1.getId(),
                 LocalDateTime.of(2022,8,10,12,0),30);
@@ -80,6 +94,14 @@ class HTTPTaskManagerTest<T extends TaskManagersTest<HTTPTaskManager>> {
         manager.getSubtaskById(subtask2.getId());
         List<Task> list = manager.getHistory();
         assertEquals(manager.getAllSubtasks(), list);
-    }
 
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        httpTaskManager = new HTTPTaskManager(historyManager, "http://localhost:" + KVServer.PORT, true);
+        assertEquals(manager.getSubtasksList(), httpTaskManager.getSubtasksList(),
+                "The list of subtasks after unloading does not match");
+        assertEquals(manager.getHistory(), httpTaskManager.getHistory(),
+                "The list of history after unloading does not match");
+        assertEquals(manager.getPrioritizedTasks(), httpTaskManager.getPrioritizedTasks(),
+                "The list of prioritized tasks after unloading does not match");
+    }
 }

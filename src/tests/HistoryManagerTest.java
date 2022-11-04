@@ -1,4 +1,3 @@
-package tests;
 
 import main.status.Status;
 import main.service.InMemoryHistoryManager;

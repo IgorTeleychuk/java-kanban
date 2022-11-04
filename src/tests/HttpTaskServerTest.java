@@ -1,4 +1,3 @@
-package tests;
 
 import main.adapters.InstantAdapter;
 import com.google.gson.Gson;
@@ -38,7 +37,7 @@ class HttpTaskServerTest {
             kvServer.start();
             taskServer = new HttpTaskServer();
             taskServer.start();
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
