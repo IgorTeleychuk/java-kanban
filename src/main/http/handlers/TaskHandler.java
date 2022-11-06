@@ -35,13 +35,13 @@ public class TaskHandler extends BaseHandler {
                         int id = Integer.parseInt(query.substring(query.indexOf("id=") + 3));
                         Task task = taskManager.getTaskById(id);
                         if (task != null) {
+                            statusCode = 200;
                             response = gson.toJson(task);
                         } else {
                             statusCode = 404;
                             httpExchange.sendResponseHeaders(statusCode, 0);
                             response = "Задача с данным id не найдена";
                         }
-                        statusCode = 200;
                     } catch (StringIndexOutOfBoundsException e) {
                         statusCode = 400;
                         response = "В запросе отсутствует необходимый параметр id";

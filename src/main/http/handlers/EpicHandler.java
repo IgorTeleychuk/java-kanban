@@ -30,13 +30,13 @@ public class EpicHandler extends BaseHandler {
                         int id = Integer.parseInt(query.substring(query.indexOf("id=") + 3));
                         Epic epic = taskManager.getEpicById(id);
                         if (epic != null) {
+                            statusCode = 200;
                             response = gson.toJson(epic);
                         } else {
                             statusCode = 404;
                             exchange.sendResponseHeaders(statusCode, 0);
                             response = "Ёпик с данным id не найден";
                         }
-                        statusCode = 200;
                     } catch (StringIndexOutOfBoundsException e) {
                         statusCode = 400;
                         response = "¬ запросе отсутствует необходимый параметр id";

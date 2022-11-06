@@ -63,4 +63,6 @@ public interface TaskManager {
     Set<Task> getPrioritizedTasks();
 
     void setPrioritizedTasks(Task task);
+
+    Integer getId();
 }

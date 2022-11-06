@@ -30,6 +30,10 @@ public class InMemoryTaskManager implements TaskManager {
     public int generateId() {
         return ++id;
     }
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
     @Override
     public Task addTask(Task task) {

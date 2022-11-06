@@ -30,13 +30,13 @@ public class SubtaskHandler extends BaseHandler {
                         int id = Integer.parseInt(query.substring(query.indexOf("id=") + 3));
                         Subtask subtask = taskManager.getSubtaskById(id);
                         if (subtask != null) {
+                            statusCode = 200;
                             response = gson.toJson(subtask);
                         } else {
                             statusCode = 404;
                             exchange.sendResponseHeaders(statusCode, 0);
                             response = "Подзадача с данным id не найдена";
                         }
-                        statusCode = 200;
                     } catch (StringIndexOutOfBoundsException e) {
                         statusCode = 400;
                         response = "В запросе отсутствует необходимый параметр id";
