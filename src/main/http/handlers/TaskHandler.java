@@ -37,6 +37,8 @@ public class TaskHandler extends BaseHandler {
                         if (task != null) {
                             response = gson.toJson(task);
                         } else {
+                            statusCode = 404;
+                            httpExchange.sendResponseHeaders(statusCode, 0);
                             response = "Задача с данным id не найдена";
                         }
                         statusCode = 200;
@@ -58,8 +60,8 @@ public class TaskHandler extends BaseHandler {
                 }
                 try {
                     Task task = gson.fromJson(bodyRequest, Task.class);
-                    int id = task.getId();
-                    if (taskManager.getTaskById(id) != null) {
+                    Integer id = task.getId();
+                    if (task != null) {
                         taskManager.updateTask(task);
                         statusCode = 201;
                         response = "Задача с id=" + id + " обновлена";
@@ -96,7 +98,7 @@ public class TaskHandler extends BaseHandler {
                 }
                 break;
             default:
-                statusCode = 400;
+                statusCode = 405;
                 response = "Некорректный запрос";
         }
 

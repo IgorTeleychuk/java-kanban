@@ -13,7 +13,7 @@ public class TasksHandler extends BaseHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        int statusCode = 400;
+        int statusCode;
         String method = httpExchange.getRequestMethod();
         String path = String.valueOf(httpExchange.getRequestURI());
 
@@ -25,6 +25,7 @@ public class TasksHandler extends BaseHandler {
                 response = gson.toJson(taskManager.getPrioritizedTasks());
                 break;
             default:
+                statusCode = 405;
                 response = "Некорректный запрос";
         }
 

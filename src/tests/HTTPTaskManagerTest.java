@@ -59,6 +59,8 @@ class HTTPTaskManagerTest<T extends TaskManagersTest<HTTPTaskManager>> {
                 "The list of history after unloading does not match");
         assertEquals(manager.getPrioritizedTasks(), httpTaskManager.getPrioritizedTasks(),
                 "The list of prioritized tasks after unloading does not match");
+        assertEquals(manager.getTaskById(task1.getId()), httpTaskManager.getTaskById(task1.getId()),
+                "The id value does not match");
 
     }
 
@@ -79,6 +81,8 @@ class HTTPTaskManagerTest<T extends TaskManagersTest<HTTPTaskManager>> {
                 "The list of epics after unloading does not match");
         assertEquals(manager.getHistory(), httpTaskManager.getHistory(),
                 "The list of history after unloading does not match");
+        assertEquals(manager.getTaskById(epic1.getId()), httpTaskManager.getTaskById(epic1.getId()),
+                "The id value does not match");
     }
 
     @Test
@@ -103,5 +107,7 @@ class HTTPTaskManagerTest<T extends TaskManagersTest<HTTPTaskManager>> {
                 "The list of history after unloading does not match");
         assertEquals(manager.getPrioritizedTasks(), httpTaskManager.getPrioritizedTasks(),
                 "The list of prioritized tasks after unloading does not match");
+        assertEquals(manager.getTaskById(subtask1.getId()), httpTaskManager.getTaskById(subtask1.getId()),
+                "The id value does not match");
     }
 }

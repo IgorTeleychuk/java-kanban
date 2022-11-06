@@ -32,6 +32,8 @@ public class SubtaskHandler extends BaseHandler {
                         if (subtask != null) {
                             response = gson.toJson(subtask);
                         } else {
+                            statusCode = 404;
+                            exchange.sendResponseHeaders(statusCode, 0);
                             response = "Подзадача с данным id не найдена";
                         }
                         statusCode = 200;
@@ -53,8 +55,8 @@ public class SubtaskHandler extends BaseHandler {
                 }
                 try {
                     Subtask subtask = gson.fromJson(bodyRequest, Subtask.class);
-                    int id = subtask.getId();
-                    if (taskManager.getSubtaskById(id) != null) {
+                    Integer id = subtask.getId();
+                    if (subtask != null) {
                         taskManager.updateTask(subtask);
                         statusCode = 200;
                         response = "Подзадача с id=" + id + " обновлена";
@@ -93,7 +95,7 @@ public class SubtaskHandler extends BaseHandler {
                 }
                 break;
             default:
-                statusCode = 400;
+                statusCode = 405;
                 response = "Некорректный запрос";
         }
 

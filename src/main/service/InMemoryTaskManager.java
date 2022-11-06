@@ -35,12 +35,8 @@ public class InMemoryTaskManager implements TaskManager {
     public Task addTask(Task task) {
         int newTaskId = generateId();
         task.setId(newTaskId);
-        if(getTaskById(newTaskId) != task) {
-        tasks.put(newTaskId, task);
-        }  else {
-            System.out.println("This task already exists");
-        }
         validation(task);
+        tasks.put(newTaskId, task);
         prioritizedTasks.add(task);
         return task;
     }
@@ -61,17 +57,12 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subtask.getEpicId());
 
         if (epic != null) {
-            if(getSubtaskTest(newSubtaskId) != subtask) {
-                subtasks.put(newSubtaskId, subtask);
-            }  else {
-                System.out.println("This subtask already exists");
-            }
+            validation(subtask);
+            subtasks.put(newSubtaskId, subtask);
             epic.addSubtaskIds(newSubtaskId);
             updateStatusEpic(epic);
             findStartTimeAndDurationOfEpic(epic);
-            validation(subtask);
             prioritizedTasks.add(subtask);
-
             return subtask;
         } else {
             System.out.println("Epic not found");
@@ -220,12 +211,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getId())) {
-            removeTaskById(task.getId());
-            tasks.put(task.getId(), task);
             validation(task);
             prioritizedTasks.remove(tasks.get(task.getId()));
+            tasks.put(task.getId(), task);
             prioritizedTasks.add(task);
-
         } else {
             System.out.println("Task not found");
         }
@@ -245,13 +234,12 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSubtask(Subtask subtask) {
         if (subtasks.containsKey(subtask.getId())) {
-            removeSubtaskById(subtask.getId());
+            validation(subtask);
+            prioritizedTasks.remove(subtasks.get(subtask.getId()));
             subtasks.put(subtask.getId(), subtask);
             Epic epic = epics.get(subtask.getEpicId());
             updateStatusEpic(epic);
             findStartTimeAndDurationOfEpic(epic);
-            validation(subtask);
-            prioritizedTasks.remove(subtasks.get(subtask.getId()));
             prioritizedTasks.add(subtask);
         } else {
             System.out.println("Subtask not found");
@@ -309,24 +297,21 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void validation (Task task) {
-        if (task.getEndTime() != null) {
-            for (Task existTask : prioritizedTasks) {
-                if (task.equals(existTask)) {
-                    continue;
-                } else {
-                    if (existTask.getStartTime() == null && task.getStartTime() != null) {
-
-                    }
-                    if(task.getEndTime().isBefore(existTask.getStartTime())
-                            || task.getEndTime().equals(existTask.getStartTime())
-                            || task.getStartTime().isAfter(existTask.getEndTime())
-                            || task.getStartTime().equals(existTask.getStartTime())){
-                        continue;
-                    } else {
-                        throw new ValidationException(task + " error validation: " + existTask);
-                    }
-                }
+        for (Task existTask : prioritizedTasks) {
+            if (Objects.equals(task.getId(), existTask.getId())) {
+                continue;
             }
+            if (existTask.getStartTime() == null || task.getStartTime() == null) {
+                break;
+            }
+            if(task.getEndTime().isBefore(existTask.getStartTime())
+                    || task.getEndTime().equals(existTask.getStartTime())
+                    || task.getStartTime().isAfter(existTask.getEndTime())
+                    || task.getStartTime().equals(existTask.getStartTime())){
+            } else {
+                throw new ValidationException(task + " error validation: " + existTask);
+            }
+
         }
     }
 

@@ -4,12 +4,10 @@ import main.adapters.InstantAdapter;
 import com.google.gson.*;
 import main.service.FileBackedTasksManager;
 import main.service.HistoryManager;
-import main.service.Managers;
 import main.tasks.Epic;
 import main.tasks.Subtask;
 import main.tasks.Task;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.stream.Collectors;
 
@@ -23,17 +21,18 @@ public class HTTPTaskManager extends FileBackedTasksManager {
     private static final Gson gson =
             new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
 
-    public HTTPTaskManager(HistoryManager historyManager, String path, Boolean startLoad) throws IOException, InterruptedException {
+    public HTTPTaskManager(HistoryManager historyManager, String path, Boolean startLoad) {
         super(historyManager);
         client = new KVTaskClient(path);
         if(startLoad) { load(); }
     }
 
-    public HTTPTaskManager(HistoryManager historyManager, String path) throws IOException, InterruptedException {
+    public HTTPTaskManager(HistoryManager historyManager, String path) {
         this(historyManager, path, false);
     }
 
     private void load() {
+        id = findMaxId();
         JsonElement jsonTasks = JsonParser.parseString(client.load(KEY_TASKS));
         if (!jsonTasks.isJsonNull()) {
             JsonArray jsonTasksArray = jsonTasks.getAsJsonArray();
@@ -77,6 +76,26 @@ public class HTTPTaskManager extends FileBackedTasksManager {
                 }
             }
         }
+    }
+
+    public Integer findMaxId () {
+        Integer newId = 0;
+        for (Integer newTaskId : tasks.keySet()){
+            if(newTaskId > newId) {
+                newId = newTaskId;
+            }
+        }
+        for (Integer newEpicId : epics.keySet()){
+            if(newEpicId > newId) {
+                newId = newEpicId;
+            }
+        }
+        for (Integer newSubtaskId : subtasks.keySet()){
+            if(newSubtaskId > newId) {
+                newId = newSubtaskId;
+            }
+        }
+        return newId;
     }
 
     @Override

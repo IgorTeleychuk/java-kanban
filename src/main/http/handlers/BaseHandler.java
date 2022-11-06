@@ -15,12 +15,12 @@ import java.time.Instant;
 
 public class BaseHandler implements HttpHandler{
 
-    public final Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
-    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    public TaskManager taskManager;
-    String response;
+    protected final Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
+    protected static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+    protected TaskManager taskManager;
+    protected String response;
 
-    public BaseHandler(TaskManager taskManager) {
+    protected BaseHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
     }
 
@@ -29,13 +29,13 @@ public class BaseHandler implements HttpHandler{
 
     }
 
-    public void writers(HttpExchange httpExchange) throws IOException {
+    protected void writers(HttpExchange httpExchange) throws IOException {
         try (OutputStream os = httpExchange.getResponseBody()) {
             os.write(response.getBytes());
         }
     }
 
-    public String readText(HttpExchange httpExchange) throws IOException {
+    protected String readText(HttpExchange httpExchange) throws IOException {
         return new String(httpExchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
     }
 }

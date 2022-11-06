@@ -33,6 +33,7 @@ public class SubtaskByEpicHandler extends BaseHandler {
                 }
                 break;
             default:
+                statusCode = 405;
                 response = "Некорректный запрос";
         }
 

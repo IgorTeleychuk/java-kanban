@@ -6,7 +6,6 @@ import main.service.TaskManager;
 import main.tasks.Epic;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class EpicHandler extends BaseHandler {
     public EpicHandler(TaskManager taskManager) {
@@ -33,6 +32,8 @@ public class EpicHandler extends BaseHandler {
                         if (epic != null) {
                             response = gson.toJson(epic);
                         } else {
+                            statusCode = 404;
+                            exchange.sendResponseHeaders(statusCode, 0);
                             response = "Ёпик с данным id не найден";
                         }
                         statusCode = 200;
@@ -54,8 +55,8 @@ public class EpicHandler extends BaseHandler {
                 }
                 try {
                     Epic epic = gson.fromJson(bodyRequest, Epic.class);
-                    int id = epic.getId();
-                    if (taskManager.getEpicById(id) != null) {
+                    Integer id = epic.getId();
+                    if (epic != null) {
                         taskManager.updateTask(epic);
                         statusCode = 200;
                         response = "Ёпик с id=" + id + " обновлен";
@@ -93,7 +94,7 @@ public class EpicHandler extends BaseHandler {
                 }
                 break;
             default:
-                statusCode = 400;
+                statusCode = 405;
                 response = "Ќекорректный запрос";
         }
 

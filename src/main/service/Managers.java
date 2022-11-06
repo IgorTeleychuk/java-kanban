@@ -14,7 +14,7 @@ public class Managers {
         return new InMemoryHistoryManager();
     }
 
-    public static HTTPTaskManager getDefault(HistoryManager historyManager) throws IOException, InterruptedException {
+    public static HTTPTaskManager getDefault(HistoryManager historyManager) {
         return new HTTPTaskManager(historyManager, "http://localhost:" + KVServer.PORT, true);
     }
 }

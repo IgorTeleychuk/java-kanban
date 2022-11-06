@@ -1,6 +1,7 @@
 package main.http;
 
 import main.exeptions.KVTaskClientGetTokenException;
+import main.service.Managers;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,28 +16,32 @@ public class KVTaskClient {
 
     private final String serverURL;
 
-    public KVTaskClient(String serverURL) throws IOException, InterruptedException {
+    public KVTaskClient(String serverURL) {
         this.serverURL = serverURL;
-        data();
+        register();
 
     }
 
-    private void data() throws IOException, InterruptedException {
-        URI uri = URI.create(this.serverURL + "/register");
+    private void register() {
+        try {
+            URI uri = URI.create(this.serverURL + "/register");
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(uri)
-                .header("Content-Type", "application/json")
-                .build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(uri)
+                    .header("Content-Type", "application/json")
+                    .build();
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpResponse<String> response = client.send(request,
-                HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() != 200) {
-            throw new KVTaskClientGetTokenException("Failed to get a token");
+            HttpClient client = HttpClient.newHttpClient();
+            HttpResponse<String> response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new KVTaskClientGetTokenException("Failed to get a token");
+            }
+            apiToken = response.body();
+        } catch (InterruptedException | IOException e) {
+            throw new RuntimeException(e);
         }
-        apiToken = response.body();
     }
 
     public void put(String key, String json) {

@@ -24,6 +24,7 @@ public class HistoryHandler extends BaseHandler {
                 response = gson.toJson(taskManager.getHistory());
                 break;
             default:
+                statusCode = 405;
                 response = "Некорректный запрос";
         }
 
